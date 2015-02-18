@@ -7,18 +7,62 @@ class MoviesController < ApplicationController
   end
 
   def index
+    @all_ratings = Movie.all_ratings
     sort = params[:sort]
-    if sort == 'title'
-      @movies = Movie.order(:title)
-    elsif sort == 'date'
-      @movies = Movie.order(:release_date)
+    ratings = params[:ratings]
+    sort_not_change = false
+    ratings_not_change = false
+    if ratings
+      # if ratings.class == Hash
+      @existing = ratings
+      # else
+      #   @existing = ratings
+      # end
+      # @existing = ratings.keys
+      session['ratfil'] = @existing
+    elsif session['ratfil']
+      @existing = session['ratfil']
+      ratings_not_change = true
     else
-      @movies = Movie.all
+      @existing = {"G" =>"1", "PG" =>"1","PG-13" =>"1", "R" =>"1"}
+      session['ratfil'] = @existing
     end
+    @movies = Movie.where(rating: @existing.keys)
+
+    if sort
+      if sort == 'title'
+        @movies = @movies.order(:title)
+        session['sortfil'] = 'title'
+      else
+        @movies = @movies.order(:release_date)
+        session['sortfil'] = 'date'
+      end
+    elsif session['sortfil']
+      sort_not_change = true
+      if session['sortfil'] == 'title'
+        @movies = @movies.order(:title)
+      else
+        @movies = @movies.order(:release_date)
+      end
+    end
+    
+    if sort_not_change
+      if ratings_not_change
+        redirect_to movies_path(:sort => session['sortfil'], :ratings => session['ratfil'])
+      else
+        redirect_to movies_path(:sort => session['sortfil'], :ratings => params[:ratings])
+      end
+    else
+      if ratings_not_change
+        redirect_to movies_path(:sort => params[:sort],:ratings => session['ratfil'])
+      end
+    end
+
   end
 
   def new
     # default: render 'new' template
+    reset_session
   end
 
   def create
