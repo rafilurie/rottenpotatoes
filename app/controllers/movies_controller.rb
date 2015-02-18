@@ -48,12 +48,15 @@ class MoviesController < ApplicationController
     
     if sort_not_change
       if ratings_not_change
+        flash.keep
         redirect_to movies_path(:sort => session['sortfil'], :ratings => session['ratfil'])
       else
+        flash.keep
         redirect_to movies_path(:sort => session['sortfil'], :ratings => params[:ratings])
       end
     else
       if ratings_not_change
+        flash.keep
         redirect_to movies_path(:sort => params[:sort],:ratings => session['ratfil'])
       end
     end
