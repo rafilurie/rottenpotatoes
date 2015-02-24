@@ -16,22 +16,7 @@ Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
   #  ensure that that e1 occurs before e2.
   #  page.body is the entire content of the page as a string.
 
-  match = /#{e1}.*#{e2}/m =~ page.body
-  # e1_true = false
-  # e2_true = false
-  # page.body.split(' ').each do |elem|
-  #   if elem == e1
-  #     e1_true = true
-  #   elsif elem == e2
-  #     e2_true = true
-  #   end
-
-  #   if e1_true && !e2_true
-  #     return true
-  #   elsif e2_true && !e1_true
-  #     return false
-  #   end
-  # end
+  assert match = /#{e1}.*#{e2}/m =~ page.body
   # flunk "Unimplemented"
 end
 
@@ -44,6 +29,7 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   #   iterate over the ratings and reuse the "When I check..." or
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
 
+  all_movies = Movie.all
   all = Movie.all_ratings
   list = rating_list.split(',')
   other = []
@@ -63,8 +49,17 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
 
   other.each do |rating|
     step "I check \"ratings_#{rating}\""
-    ##step "The \"ratings_#{rating}\" checkbox should be checked"
+    #step "The \"ratings_#{rating}\" checkbox should be checked"
   end
+
+  # all_movies.each do |movie|
+  #   if list.include? movie.rating
+  #     step "I should see \"#{movie.title}\""
+  #   else
+  #     step "I should not see \"#{movie.title}\""
+  #   end
+  # end
+
 end
 
 Then /I should see all the movies/ do
