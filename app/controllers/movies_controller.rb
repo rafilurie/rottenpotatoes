@@ -13,12 +13,7 @@ class MoviesController < ApplicationController
     sort_not_change = false
     ratings_not_change = false
     if ratings
-      # if ratings.class == Hash
       @existing = ratings
-      # else
-      #   @existing = ratings
-      # end
-      # @existing = ratings.keys
       session['ratfil'] = @existing
     elsif session['ratfil']
       @existing = session['ratfil']
@@ -90,6 +85,11 @@ class MoviesController < ApplicationController
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
+  end
+
+  def director
+    temp = Movie.find_by_id(params[:id])
+    @movies = Movie.find_all_by_director(temp.director)
   end
 
 end

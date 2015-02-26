@@ -51,15 +51,6 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
     step "I check \"ratings_#{rating}\""
     #step "The \"ratings_#{rating}\" checkbox should be checked"
   end
-
-  # all_movies.each do |movie|
-  #   if list.include? movie.rating
-  #     step "I should see \"#{movie.title}\""
-  #   else
-  #     step "I should not see \"#{movie.title}\""
-  #   end
-  # end
-
 end
 
 Then /I should see all the movies/ do
@@ -68,4 +59,8 @@ Then /I should see all the movies/ do
   all.each do |movie|
     step "I should see \"#{movie.title}\""
   end
+end
+
+Then /the director of (.*) should be (.*)/ do |title, dir|
+  assert Movie.find_by_title(title).director == dir
 end
