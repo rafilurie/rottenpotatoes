@@ -3,7 +3,7 @@
 %h1 Edit Existing Movie
 
 = form_tag movie_path(@movie), :method => :put do
-
+  -puts @movie.id
   = label :movie, :title, 'Title'
   = text_field :movie, 'title'
 

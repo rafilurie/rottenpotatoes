@@ -1,3 +1,4 @@
+require 'debugger'
 # TL;DR: YOU SHOULD DELETE THIS FILE
 #
 # This file is used by web_steps.rb, which you should also delete
@@ -22,14 +23,14 @@ module NavigationHelpers
     #   when /^(.*)'s profile page$/i
     #     user_profile_path(User.find_by_login($1))
 
-    when /^the edit page for (.*)$/i
-      edit_movie_path(Movie.find_by_title($1).object_id)
+    when /^the edit page for "(.*)"$/i
+      edit_movie_path(Movie.find_by_title($1).id)
 
-    when /^the details page for (.*)$/i
-      movie_path(Movie.find_by_title($1).object_id)
+    when /^the details page for "(.*)"$/i
+      movie_path(Movie.find_by_title($1).id)
 
-    when /^the Similar Movies page for (.*)$/i
-      director_path(Movie.find_by_title($1).object_id)
+    when /^the Similar Movies page for "(.*)"$/i
+      director_path(Movie.find_by_title($1).id)
 
     else
       begin

@@ -1,3 +1,4 @@
+require 'debugger'
 class MoviesController < ApplicationController
 
   def show
@@ -55,7 +56,6 @@ class MoviesController < ApplicationController
         redirect_to movies_path(:sort => params[:sort],:ratings => session['ratfil'])
       end
     end
-
   end
 
   def new
@@ -89,7 +89,13 @@ class MoviesController < ApplicationController
 
   def director
     temp = Movie.find_by_id(params[:id])
-    @movies = Movie.find_all_by_director(temp.director)
+    if temp.director == ""
+      flash[:notice] = "'#{temp.title}' has no director info"
+      flash.keep
+      redirect_to movies_path
+    else
+      @movies = Movie.find_all_by_director(temp.director)
+    end
   end
 
 end
